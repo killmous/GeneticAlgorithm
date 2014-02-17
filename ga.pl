@@ -7,7 +7,7 @@ use List::Util::WeightedChoice qw( choose_weighted );
 ###################################################################
 
 my $entropy = 1;
-my $pc = 0;
+my $pc = 0.4;
 my $pm = 0.01;
 
 ###################################################################
@@ -33,7 +33,7 @@ sub fitness {
 sub evaluateFitness {
 	my @population = @_;
 	my @fitness = ();
-	@population = shuffle @population;
+	#@population = shuffle @population;
 	for(my $i = 0; $i < scalar(@population); $i++)
 	{
 		my $contender1 = $population[$i];
@@ -48,21 +48,21 @@ sub evaluateFitness {
 
 		if($moves[0] == 0 && $moves[1] == 0)
 		{
-			$fitness1 += 1;
-			$fitness2 += 1;
+			$fitness1 = 1;
+			$fitness2 = 1;
 		}
 		elsif($moves[0] == 1 && $moves[1] == 0)
 		{
-			$fitness2 += 5;
+			$fitness2 = 5;
 		}
 		elsif($moves[0] == 1 && $moves[1] == 1)
 		{
-			$fitness1 += 3;
-			$fitness2 += 3;
+			$fitness1 = 3;
+			$fitness2 = 3;
 		}
 		elsif($moves[0] == 0 && $moves[1] == 1)
 		{
-			$fitness1 += 5;
+			$fitness1 = 5;
 		}
 
 		push(@fitness, 1.0 / ($fitness1 + 1));
@@ -98,7 +98,7 @@ sub evolve {
 		push(@intermediate, choose_weighted(\@population, \@fitness));
 	}
 
-	@population = shuffle @population;
+	#@population = shuffle @population;
 
 	for(my $i = 0; $i < scalar(@intermediate); $i++)
 	{
@@ -125,7 +125,7 @@ sub evolve {
 
 my @pop = initPopulation(32);
 print "@pop\n\n";
-for(my $i = 0; $i < 2; $i++)
+for(my $i = 0; $i < 10; $i++)
 {
 	@pop = evolve(@pop);
 	print "@pop\n\n";

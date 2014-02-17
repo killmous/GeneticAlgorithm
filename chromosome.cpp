@@ -22,7 +22,7 @@ Population::Population(	int populationSize,
 	std::random_device rd;
 	for(int i = 0; i < _populationSize; ++i)
 	{
-		_population[i] = int(rd()/double(rd.max())*(2 << entropy));
+		_population[i] = int(rd()/double(rd.max())*(1 << entropy));
 	}
 }
 
