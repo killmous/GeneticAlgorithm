@@ -1,5 +1,6 @@
 #include <cstdio>
 #include <cmath>
+#include <random>
 #include "chromosome.h"
 
 bool bitAt(int offset, Chromosome chromo)
@@ -7,14 +8,15 @@ bool bitAt(int offset, Chromosome chromo)
 	return (chromo >> (offset - 1)) & 0b1;
 }
 
-int population = 64;
-int iterations = 500;
+int population = 256;
+int iterations = 100;
 int entropy = 5;
 double pm = 0.01;
 double pc = 0.4;
 double* fitness(Chromosome* pop, int popSize)
 {
-	int tournamentLength = 32;
+	std::random_device rd;
+	int tournamentLength = int(rd()/double(rd.max())*250);
 
 	double* ret = new double[popSize];
 	for(int i = 0; i < popSize; i++)
@@ -60,18 +62,18 @@ double* fitness(Chromosome* pop, int popSize)
 				}
 				else if(temp1 && !temp2) //If i defect and he cooperate
 				{
-					move1 = bitAt(4, contender1);
-					move2 = bitAt(3, contender2);
+					move1 = bitAt(3, contender1);
+					move2 = bitAt(4, contender2);
 				}
-				else if(!temp1 && !temp1)
+				else if(!temp1 && !temp2)
 				{
 					move1 = bitAt(5, contender1);
 					move2 = bitAt(5, contender2);
 				}
 				else if(!temp1 && temp2)
 				{
-					move1 = bitAt(3, contender1);
-					move2 = bitAt(4, contender2);
+					move1 = bitAt(4, contender1);
+					move2 = bitAt(3, contender2);
 				}
 			}
 		}
@@ -84,9 +86,9 @@ double* fitness(Chromosome* pop, int popSize)
 
 // bit 1 -> first move
 // bit 2 -> move if both defect
-// bit 3 -> move if he defect i cooperate
-// bit 4 -> move if i defect he cooperate
-// bit 5 -> nove if both cooperate
+// bit 3 -> move if i defect he cooperate
+// bit 4 -> move if he defect i cooperate
+// bit 5 -> move if both cooperate
 
 int main(int argc, char **argv)
 {
